@@ -13,4 +13,9 @@
   "maxPath" : null,
   "maxPathSum" : 497,
   "height" : 9
+}, {
+  "pyramidData" : [ 88, 48, 25, 55, 93, 85, 68, 45, 38, 77, 22, 96, 76, 50, 14 ],
+  "maxPath" : null,
+  "maxPathSum" : 0,
+  "height" : 5
 } ]
