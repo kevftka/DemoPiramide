@@ -25,25 +25,34 @@ main {
 }
 
 h1 {
+  display: flex;
+  justify-content: center;
   font-size: 1rem;
   font-weight: 700;
 }
 
 input {
   width: 100%;
-  border-radius: 3px;
-  border: 2px solid #3332ff;
+  border-radius: 50px;
+  border: 5px solid #34375f;
   padding: 0.3rem;
 }
 
 button {
   padding: 5px;
-  background-color: #3332ff;
+  background-color: #34375f;
   color: #fff;
   font-weight: 600;
-  border-radius: 5px;
+  border-radius: 50px;
   border: unset;
   font-size: 12px !important;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover{
+  background-color: #b2e2f2;
+  color: black;
 }
 
 .card {
@@ -52,6 +61,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  border-radius: 8%;
 }
 
 .card-body {
@@ -65,10 +75,10 @@ button {
 
   padding: 0.3rem 1rem;
   background-color: #ffff;
-  color: #3332ff;
+  color: #34375f;
   font-weight: 600;
-  border: 2px solid #3332ff;
-  border-radius: 2px !important;
+  border: solid 5px #34375f;
+  border-radius: 50px !important;
   font-size: 12px !important;
 }
 
@@ -88,13 +98,15 @@ button {
   height: 40px;
   text-align: center;
   padding: 10px;
-  border-radius: 5px !important;
+  border-radius: 50px !important;
   margin: 2px !important;
-  background-color: #acafb9;
+  background-color: #b2e2f2 ;
+  border: solid 2px #252850;
 }
 
 .path {
-  background-color: #3332ff;
+  background-color: #252850;
+  border: solid 2px #b2e2f2;
   color: #fff;
 }
 
