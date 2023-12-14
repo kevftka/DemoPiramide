@@ -24,7 +24,7 @@ public class Main {
 
 
         // Set the static file location
-        staticFiles.location("/public");
+        staticFiles.location("src/main/resources/public");
 
         // Hello, World route
         get("/hello", (req, res) -> "Hello, World!");
