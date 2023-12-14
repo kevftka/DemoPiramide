@@ -26,9 +26,6 @@ public class Main {
         // Set the static file location
         staticFiles.location("/public");
 
-        // Hello, World route
-        get("/hello", (req, res) -> "Hello, World!");
-
 
         // API to list all pyramids
         get("/stored-pyramids", (req, res) -> pyramidStorage.getAllPyramids(), gson::toJson);
