@@ -2,40 +2,40 @@ package com.example.demo;
 import java.util.List;
 
 public class SavePyramidRequest {
-    private List<Integer> pyramidData;
-    private List<Integer> maxPath;
-    private int maxPathSum;
+    private List<List<Integer>> pyramidData;
+    private List<Integer> maxPathRoute;
+    private int maxRouteSum;
     private int height;
 
-    public SavePyramidRequest(List<Integer> pyramidData, List<Integer> maxPath, int maxPathSum, int height) {
+    public SavePyramidRequest(List<List<Integer>> pyramidData, List<Integer> maxPathRoute, int maxRouteSum, int height) {
         this.pyramidData = pyramidData;
-        this.maxPath = maxPath;
-        this.maxPathSum = maxPathSum;
+        this.maxPathRoute = maxPathRoute;
+        this.maxRouteSum = maxRouteSum;
         this.height = height;
     }
 
-    public List<Integer> getPyramidData() {
+    public List<List<Integer>> getPyramidData() {
         return pyramidData;
     }
 
-    public void setPyramidData(List<Integer> pyramidData) {
+    public void setPyramidData(List<List<Integer>> pyramidData) {
         this.pyramidData = pyramidData;
     }
 
-    public List<Integer> getMaxPath() {
-        return maxPath;
+    public List<Integer> getMaxPathRoute() {
+        return maxPathRoute;
     }
 
-    public void setMaxPath(List<Integer> maxPath) {
-        this.maxPath = maxPath;
+    public void setMaxPath(List<Integer> maxPathRoute) {
+        this.maxPathRoute = maxPathRoute;
     }
 
-    public int getMaxPathSum() {
-        return maxPathSum;
+    public int getMaxRouteSum() {
+        return maxRouteSum;
     }
 
-    public void setMaxPathSum(int maxPathSum) {
-        this.maxPathSum = maxPathSum;
+    public void setMaxRouteSum(int maxRouteSum) {
+        this.maxRouteSum = maxRouteSum;
     }
     public int getHeight() {
         return height;

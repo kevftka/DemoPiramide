@@ -1,41 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>Encuentra el Camino con Mayor Peso</title>
-    <style></style>
-  </head>
-  <body>
-    <main>
-      <div class="card">
-        <h1>Encuentra el Camino con Mayor Peso en la Pirámide</h1>
-        <label for="pyramid-height">Altura de la pirámide:</label>
-        <input type="number" id="pyramid-height" min="2" max="49" value="5" />
-        <div class="button">
-          <button id="generate-pyramid">Generar Pirámide</button>
-          <button id="find-max-path">Encontrar Camino con Mayor Peso</button>
-          <button id="reset-pyramid">Reiniciar</button>
-          <button id="save-pyramid">Guardar Pirámide</button>
-          <button id="view-history">Ver Historial</button>
-        </div>
-        <div class="card-body">
-          <div class="pyramid" id="pyramid"></div>
-        </div>
-        <div class="card-footer">
-          <p id="max-path-sum">Suma de la Ruta con Mayor Peso:</p>
-        </div>
-      </div>
-    </main>
 
-    <div id="history-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <div id="history-content"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>Encuentra el Camino con Mayor Peso</title>
+  <style></style>
+</head>
+
+<body>
+  <main>
+    <div class="card">
+      <h1>Encuentra el Camino con Mayor Peso en la Pirámide</h1>
+      <label for="pyramid-height">Altura de la pirámide:</label>
+      <input type="number" id="pyramid-height" min="2" max="49" value="5" />
+      <div class="button">
+        <button id="generate-pyramid">Generar Pirámide</button>
+        <!-- <button id="find-max-path">Encontrar Camino con Mayor Peso</button> -->
+        <button id="reset-pyramid">Reiniciar</button>
+        <button id="save-pyramid">Guardar Pirámide</button>
+        <button id="view-history">Ver Historial</button>
+      </div>
+      <div class="card-body">
+        <div class="pyramid" id="pyramid"></div>
+      </div>
+      <div class="card-footer">
+        <p id="max-path-sum">Suma de la Ruta con Mayor Peso:</p>
       </div>
     </div>
+  </main>
 
-    <script src="app.js"></script>
-  </body>
+  <div id="history-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="history-content"></div>
+    </div>
+  </div>
+
+  <script>
+    const pyramidContainer = document.getElementById("pyramid");
+    let pyramidData = [];
+    let maxPathRoute = [];
+    let maxRouteSum = 0;
+
+    document
+      .getElementById("generate-pyramid")
+      .addEventListener("click", generatePyramid);
+    document
+      .getElementById("reset-pyramid")
+      .addEventListener("click", resetPyramid);
+
+    document.getElementById("save-pyramid").addEventListener("click", savePyramid);
+
+
+    function generatePyramid() {
+      // const height = prompt("Enter the height of the pyramid (1-50):");
+      const height = parseInt(
+        document.getElementById("pyramid-height").value
+      );
+      if (!height || isNaN(height) || height < 1 || height > 50) {
+        alert("Please enter a valid height between 1 and 50.");
+        return;
+      }
+      document.getElementById("pyramid-height").value = String(height);
+
+      // Make an AJAX request to the SparkJava back-end
+      fetch(`/generate-pyramid?height=${height}`)
+        .then((response) => response.json())
+        .then((pyramid) => {
+          console.log("pyramid", pyramid);
+          pyramidData = pyramid.pyramid;
+          maxPathRoute = pyramid.maxPathRoute;
+          maxRouteSum = pyramid.maxRouteSum;
+          showUI();
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+
+    function showUI() {
+      const pyramidHeight = parseInt(
+        document.getElementById("pyramid-height").value
+      );
+      pyramidContainer.innerHTML = "";
+
+      for (let i = 0; i < pyramidHeight; i++) {
+        const row = document.createElement("div");
+        row.className = "row";
+        for (let j = 0; j <= i; j++) {
+          const brick = document.createElement("div");
+          brick.className = "brick";
+          if (maxPathRoute[i] == j) {
+            brick.className += " path";
+          }
+          const randomNumber = pyramidData[i][j];
+          brick.innerText = randomNumber;
+          row.appendChild(brick);
+        }
+
+        pyramidContainer.appendChild(row);
+      }
+      document.getElementById(
+        "max-path-sum"
+      ).innerText = `Suma de la Ruta con Mayor Peso: ${maxRouteSum}`;
+
+    }
+
+
+    function resetPyramid() {
+      pyramidData = [];
+      maxPathRoute = [];
+      pyramidContainer.innerHTML = "";
+      document.getElementById("max-path-sum").innerText =
+        "Suma de la Ruta con Mayor Peso:";
+      document.getElementById("pyramid-height").value = "5";
+    }
+
+    function savePyramid() {
+      // Check if a pyramid has been generated
+      if (pyramidData.length === 0) {
+        alert("Primero genera una pirámide.");
+        return;
+      }
+
+      // Make an AJAX request to save the pyramid with the path
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/save-pyramid", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          alert("Pyramid saved successfully!");
+        }
+      };
+
+      const requestBody = {
+        pyramidData: pyramidData,
+        height: parseInt(document.getElementById("pyramid-height").value),
+        maxPathRoute: maxPathRoute,
+        maxRouteSum: parseInt(
+          document
+            .getElementById("max-path-sum")
+            .innerText.split(":")[1]
+            .trim()
+        ),
+      };
+
+      xhr.send(JSON.stringify(requestBody));
+    }
+
+    // Function to open the history modal
+    document
+      .getElementById("view-history")
+      .addEventListener("click", openHistoryModal);
+    function openHistoryModal() {
+      const historyModal = document.getElementById("history-modal");
+      const historyContent = document.getElementById("history-content");
+
+      // Make an AJAX request to get the stored pyramids
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "/stored-pyramids", true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const storedPyramids = JSON.parse(xhr.responseText);
+
+          // Generate HTML content for the history modal
+          let historyHTML =
+            "<h2>Historial de Pirámides</h2><ul style='list-style-type: none;'>";
+
+          storedPyramids.forEach((pyramid, index) => {
+            historyHTML += `<li style="margin-top: 10px;"><button onclick="viewPyramid(${index})">Ver Pirámide ${index + 1
+              }</button></li>`;
+          });
+
+          historyHTML += "</ul>";
+
+          // Set the content and display the modal
+          historyContent.innerHTML = historyHTML;
+          historyModal.style.display = "block";
+        }
+      };
+
+      xhr.send();
+    }
+
+    function viewPyramid(index) {
+      // Make an AJAX request to get the stored pyramids
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "/stored-pyramids", true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const storedPyramids = JSON.parse(xhr.responseText);
+
+          // Get the pyramid data for the selected index
+          const selectedPyramid = storedPyramids[index];
+
+          document.getElementById("pyramid-height").value = String(
+            selectedPyramid.height
+          );
+          pyramidData = selectedPyramid.pyramidData;
+          maxPathRoute = selectedPyramid.maxPathRoute;
+          maxRouteSum = selectedPyramid.maxRouteSum;
+
+          document.getElementById("history-modal").style.display = "none";
+          showUI();
+          // findMaxPath();
+        }
+      };
+
+      xhr.send();
+    }
+
+    document
+      .querySelector(".modal-content .close")
+      .addEventListener("click", function () {
+        document.getElementById("history-modal").style.display = "none";
+      });
+
+    // Close the history modal if the user clicks outside the modal
+    window.addEventListener("click", function (event) {
+      const historyModal = document.getElementById("history-modal");
+      if (event.target === historyModal) {
+        historyModal.style.display = "none";
+      }
+    });
+
+    // Generar la pirámide inicial al cargar la página
+    generatePyramid();
+
+  </script>
+</body>
+
 </html>

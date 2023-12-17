@@ -5,43 +5,43 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Pyramid {
-    private List<Integer> pyramidData;
-    private List<Integer> maxPath;
-    private int maxPathSum;
+    private List<List<Integer>> pyramidData;
+    private List<Integer> maxPathRoute;
+    private int maxRouteSum;
     private int height;
 
     // public Pyramid() {}
 
     @JsonCreator
-    public Pyramid(@JsonProperty("pyramidData") List<Integer> pyramidData, @JsonProperty("maxPath") List<Integer> maxPath, @JsonProperty("maxPathSum") int maxPathSum, @JsonProperty("height") int height) {
+    public Pyramid(@JsonProperty("pyramidData") List<List<Integer>> pyramidData, @JsonProperty("maxPathRoute") List<Integer> maxPathRoute, @JsonProperty("maxRouteSum") int maxRouteSum, @JsonProperty("height") int height) {
         this.pyramidData = pyramidData;
-        this.maxPath = maxPath;
+        this.maxPathRoute = maxPathRoute;
         this.height = height;
-        this.maxPathSum = maxPathSum;
+        this.maxRouteSum = maxRouteSum;
     }
 
-    public List<Integer> getPyramidData() {
+    public List<List<Integer>> getPyramidData() {
         return pyramidData;
     }
 
-    public void setPyramidData(List<Integer> pyramidData) {
+    public void setPyramidData(List<List<Integer>> pyramidData) {
         this.pyramidData = pyramidData;
     }
 
-    public List<Integer> getMaxPath() {
-        return maxPath;
+    public List<Integer> getMaxPathRoute() {
+        return maxPathRoute;
     }
 
-    public void setMaxPath(List<Integer> maxPath) {
-        this.maxPath = maxPath;
+    public void setMaxPath(List<Integer> maxPathRoute) {
+        this.maxPathRoute = maxPathRoute;
     }
 
-    public int getMaxPathSum() {
-        return maxPathSum;
+    public int getMaxRouteSum() {
+        return maxRouteSum;
     }
 
-    public void setMaxPathSum(int maxPathSum) {
-        this.maxPathSum = maxPathSum;
+    public void setMaxRouteSum(int maxRouteSum) {
+        this.maxRouteSum = maxRouteSum;
     }
     
     public int getHeight() {
